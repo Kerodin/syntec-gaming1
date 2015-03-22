@@ -1,0 +1,88 @@
+Virtuelle Items Hinzufuegen 
+
+Ausweis und Fahrzeugschein
+
+
+//-------------------------------------
+
+core/configurations.sqf
+
+life_inv_items = 
+[
+	"life_inv_pass",
+	"life_inv_fahrzeugschein",
+	"life_inv_frachtpapier"
+];
+
+sell_arrey =
+[
+	["pass",5],
+	["fahrzeugschein",5],
+	["frachtpapier",5],
+];	
+	
+buy_array =
+[
+	["pass",5],
+	["fahrzeugschein",5],
+	["frachtpapier",5],
+];
+
+
+//-------------------------------------
+
+File: core/config/fn_varToStr.sqf
+
+switch (_var) do
+{
+	//Virtual Inventory Items
+	case "life_inv_pass": {"Personal Ausweis"};   
+	case "life_inv_fahrzeugschein": {"Fahrzeugschein"};    
+	case "life_inv_frachtpapier": {"Frachtpapiere B19"};
+};
+
+//-------------------------------------
+
+File: fn_varHandle.sqf
+
+case 0:
+	{
+		switch (_var) do
+		{
+			case "pass": {"life_inv_pass"};
+			case "fahrzeugschein": {"life_inv_fahrzeugschein"};
+			case "frachtpapier": {"life_inv_frachtpapier"};
+		};
+	};
+	
+case 1:
+	{
+		switch (_var) do
+		{
+			case "life_inv_pass": {"pass"};
+			case "life_inv_fahrzeugschein": {"fahrzeugschein"};
+			case "life_inv_frachtpapier": {"frachtpapier"};
+		};
+	};
+	
+//-------------------------------------
+
+File: fn_virt_shops.sqf
+
+case "amt": {["Formulare",["pass","fahrzeugschein","frachtpapier"]]};
+
+//-------------------------------------
+
+File: fn_saveGear.sqf
+
+	forEach [
+    ["life_inv_pass", life_inv_pass],
+    ["life_inv_fahrzeugschein", life_inv_fahrzeugschein],
+    ["life_inv_frachtpapier", life_inv_frachtpapier]
+	
+//-------------------------------------
+
+Map NPC Aufstellen:
+init. 
+
+	init="this allowDamage false; this enableSimulation false; this addAction[""Formulare und Dokumente"",life_fnc_virt_menu,""amt"",0,true,true,"""",'_this distance _target < 2.5'];";
